@@ -14,7 +14,7 @@ X, y = fetch_openml('mnist_784', version=1, return_X_y=True)
 y = y.astype(int)
 X = ((X / 255.) - .5) * 2
 X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=10000, random_state=123, stratify=y)
+    X, y, test_size=10000, random_state=41, stratify=y)
 
 
 
@@ -32,8 +32,8 @@ print("Number of attributes in X = ", X_train.shape[1])
 
 '''
 Markdown cell
-We observe that X_train has 60,000 rows and X_test has 10000 rows. 
-Each row represents 784 pixels in a 28x28 handwritten digit picture as columns. 
+We observe that X_train has 60,000 rows and X_test has 10,000 rows. 
+Each row represents 784 pixels in a 28x28 handwritten digit picture as attributes. 
 
 Hence, we have 60,000 unique image samples in training and 10,000 unique image samples in test dataset.
 '''
@@ -91,7 +91,7 @@ Hence all pixels in range [0, 255] will now be scaled between [-1, 1] which help
 ## Let us fit the pca with X_train, and use that to transform both x_train and x_test datasets
 from sklearn.decomposition import PCA
 
-pca = PCA(n_components=10).fit(X_train)
+pca = PCA(n_components=2).fit(X_train)
 X_train_transformed = pca.transform(X_train)
 X_test_transformed = pca.transform(X_test)
 
@@ -111,14 +111,14 @@ from sklearn.neighbors import KNeighborsClassifier
 
 knn = KNeighborsClassifier(n_neighbors=5, weights='uniform', algorithm='auto', leaf_size=30, p=2,
                            metric='minkowski', metric_params=None, n_jobs=None)
-knn = knn.fit(X_train, y_train)
+knn = knn.fit(X_train_transformed, y_train)
 
 
 
 #### Question 3.2:
 
-y_pred_train = knn.predict(X_train)
-y_pred_test = knn.predict(X_test)
+y_pred_train = knn.predict(X_train_transformed)
+y_pred_test = knn.predict(X_test_transformed)
 
 
 from sklearn.metrics import accuracy_score
@@ -161,7 +161,6 @@ from sklearn.metrics import accuracy_score
 
 print("Training Accuracy = ", accuracy_score(y_train, y_pred_train))
 print("\nTesting Accuracy = ", accuracy_score(y_test, y_pred_test))
-
 
 
 
