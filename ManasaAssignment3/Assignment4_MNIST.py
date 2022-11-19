@@ -111,14 +111,14 @@ from sklearn.neighbors import KNeighborsClassifier
 
 knn = KNeighborsClassifier(n_neighbors=5, weights='uniform', algorithm='auto', leaf_size=30, p=2,
                            metric='minkowski', metric_params=None, n_jobs=None)
-knn = knn.fit(X_train_transformed, y_train)
+knn = knn.fit(X_train, y_train)
 
 
 
 #### Question 3.2:
 
-y_pred_train = knn.predict(X_train_transformed)
-y_pred_test = knn.predict(X_test_transformed)
+y_pred_train = knn.predict(X_train)
+y_pred_test = knn.predict(X_test)
 
 
 from sklearn.metrics import accuracy_score
